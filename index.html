@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Website Buku Novel &amp; Komik</title> 
+  <link rel="stylesheet" href="style.css"> 
+ <style type="text/css" id="dcoder_stylesheet">/* style.css */
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+header {
+    background: linear-gradient(rgba(53, 70, 92, 0.8), rgba(53, 70, 92, 0.5)), url('header_background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 50px 0; 
+    text-align: center;
+}
+
+
+header h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ffd700; /* Ganti dengan warna yang Anda inginkan */
+}
+
+
+/* Recommendations Section */
+#recommendations {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+}
+
+.carousel {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.recommendation {
+    width: 300px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.recommendation img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Footer */
+footer {
+    background-color: #35465C;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    header {
+        padding: 10px 0;
+    }
+    
+    nav ul li {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .recommendation {
+        width: 100%;
+    }
+    
+    .recommendation img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    nav ul li {
+        font-size: 14px;
+    }
+    
+    .recommendation {
+        padding: 5px;
+        margin: 5px;
+    }
+}
+
+.cta-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #35465C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #293B4A;
+}</style></head> 
+ <body> 
+  <header> 
+   <h1>Selamat Datang di Website Buku Novel &amp; Komik</h1> 
+   <nav> 
+    <ul> 
+     <li><a href="novel.html">Novel</a></li> 
+     <li><a href="komik.html">Komik</a></li> 
+     <li><a href="login.html">Logout</a></li>
+    </ul> 
+   </nav> 
+   
+  </header> 
+  <section id="novel-recommendations"> 
+   <h2>
+    <center>
+     Rekomendasi Novel
+    </center></h2> 
+   <div class="carousel"> 
+    <div class="recommendation"> 
+     <img src="cover_novel1.jpg" alt="Novel Rekomendasi 1"> 
+     <h3>omniscient reader's viewpoint</h3> 
+     <p>Only I know the end of this world. One day our MC finds himself stuck in the world of his favorite webnovel. What does he do to survive? It is a world struck by catastrophe and danger all around. His edge? He knows the plot of the story to end. Because he was the sole reader that stuck with it.</p> 
+    </div> 
+    <div class="recommendation"> 
+     <img src="cover_novel2.jpg" alt="The Lord of Mysteries"> 
+     <h3>The Lord of Mysteries</h3> 
+     <p> "In the waves of steam and machinery, who could achieve extraordinary? In the fogs of history and darkness, who was whispering? I woke up from the realm of mysteries and opened my eyes to the world. Firearms, cannons, battleships, airships, and difference machines. Potions, divination, curses, hanged-man, and sealed artifacts… The lights shone brightly, yet the secrets of the world were never far away. This was a legend of the 'Fool'." </p> 
+    </div> 
+   </div>
+  </section> 
+  <div class="cta-buttons"> <a href="novel.html" class="cta-button">Lihat Semua Novel</a> 
+  </div> 
+  <section id="komik-recommendations"> 
+   <h2>
+    <center>
+     Rekomendasi Komik
+    </center></h2> 
+   <div class="carousel"> 
+    <div class="recommendation"> 
+     <img src="cover_komik1.jpg" alt="Komik Rekomendasi 1"> 
+     <h3>Lookism</h3> 
+     <p>Set in the outskirts of Seoul, Lookism is about a boy named Daniel Park (Park Hyungseok) who is bullied because of his looks. He decides to transfer schools, only to wake up in a new body. Throughout the story he witnesses multiple cases of 'Lookism', a form of discrimination based on a person's attractiveness. As Daniel navigates this new life, he tries to uncover the mystery behind his second body.</p> 
+    </div> 
+    <div class="recommendation"> 
+     <img src="cover_komik2.jpg" alt="Tower of God"> 
+     <h3>Tower of God</h3> 
+     <p> "Tower of God centers around a boy named Twenty-Fifth Bam. It is notable that in Korea 'Bam' can mean 'Night' or 'Chestnut'. He has spent most of his life trapped beneath a vast and mysterious Tower, with only his close friend, Rachel, to keep him company. When Rachel enters the Tower, Bam is devastated. Somehow, Bam manages to open the door to the Tower. Now, he will go any distance to see Rachel again even if it means dying. When he enters the Tower, he meets allies that will help him up the tower." </p> 
+    </div> 
+   </div> 
+  </section> 
+  <div class="cta-buttons"> <a href="komik.html" class="cta-button">Lihat Semua Komik</a> 
+  </div> 
+  <footer> 
+   <p>© 2023 Website Buku Novel &amp; Komik by Parid Hadiansyah</p> 
+  </footer> 
+ 

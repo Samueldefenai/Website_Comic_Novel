@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Komik</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        .komik-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .komik-list {
+            margin-top: 20px;
+        }
+
+        .komik-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .delete-btn {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+
+<header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="admin-dashboard.html">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="novel-admin.html">Novel Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="komik-form">
+                    <h2 class="mb-4">Tambah Komik Baru</h2>
+                    <form id="tambahKomikForm">
+    <div class="form-group">
+        <input type="text" class="form-control" id="judul" placeholder="Judul Komik" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="pengarang" placeholder="Pengarang Komik" required>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" id="sinopsis" placeholder="Sinopsis Komik" required></textarea>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="coverURL" placeholder="URL Cover Komik" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Tambah Komik</button>
+</form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row komik-list" id="daftarKomik"></div>
+    </div>
+
+    <!-- Link Bootstrap JS dan Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+        <script type="module">
+        
+
+        
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBa_XuCld_iNtP2lH8vkn1hcRDr3bwBXRc",
+  authDomain: "webcomicnovel.firebaseapp.com",
+  databaseURL: "https://webcomicnovel-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "webcomicnovel",
+  storageBucket: "webcomicnovel.appspot.com",
+  messagingSenderId: "840417395448",
+  appId: "1:840417395448:web:830fb48f47a3bba684b10d",
+  measurementId: "G-0YS5XKQDSV"
+};
+        firebase.initializeApp(firebaseConfig);
+        const firestore = firebase.firestore();
+
+        const tambahKomikForm = document.getElementById('tambahKomikForm');
+        const daftarKomik = document.getElementById('daftarKomik');
+
+        // Function to render komik data
+        function renderKomik(komik) {
+            const komikContainer = document.createElement('div');
+            komikContainer.classList.add('komik');
+
+            const coverImage = document.createElement('img');
+            coverImage.src = komik.coverURL;
+            coverImage.alt = komik.judul;
+
+            const komikInfo = document.createElement('div');
+            komikInfo.classList.add('komik-info');
+
+            const judulElement = document.createElement('h3');
+            judulElement.textContent = komik.judul;
+
+            const pengarangElement = document.createElement('p');
+            pengarangElement.textContent = `Pengarang: ${komik.pengarang}`;
+
+            const sinopsisElement = document.createElement('p');
+            sinopsisElement.textContent = komik.sinopsis;
+
+            // Append elements to the container
+            komikInfo.appendChild(judulElement);
+            komikInfo.appendChild(pengarangElement);
+            komikInfo.appendChild(sinopsisElement);
+
+            komikContainer.appendChild(coverImage);
+            komikContainer.appendChild(komikInfo);
+
+            // Append the container to the daftarKomik
+            daftarKomik.appendChild(komikContainer);
+        }
+
+        // Event listener for tambahKomikForm submission
+        tambahKomikForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const judul = document.getElementById('judul').value;
+    const pengarang = document.getElementById('pengarang').value;
+    const sinopsis = document.getElementById('sinopsis').value;
+    const coverURL = document.getElementById('coverURL').value;
+
+    // Add new komik to Firestore
+    firestore.collection('komik').add({
+        judul: judul,
+        pengarang: pengarang,
+        sinopsis: sinopsis,
+        coverURL: coverURL
+    });
+
+    // Clear form fields
+    tambahKomikForm.reset();
+});
+
+
+        // Fetch komik data and render on page load
+        firestore.collection('komik').onSnapshot((snapshot) => {
+            daftarKomik.innerHTML = ''; // Clear previous data
+            snapshot.forEach((doc) => {
+                const komikData = doc.data();
+                renderKomik(komikData);
+            });
+        });
+    </script>
+
+    
+</body>
+
+</html>

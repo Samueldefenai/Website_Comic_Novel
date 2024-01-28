@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Website Buku Novel & Komik</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+    background-image: url('background_login.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(to bottom, rgba(53, 70, 92, 0.8), rgba(53, 70, 92, 1));
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s;
+    width: 110%;
+}
+
+#login-form {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px; 
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s, box-shadow 0.5s;
+    margin-bottom: 20px; 
+}
+
+#login-form h2 {
+    margin-bottom: 20px;
+    color: #35465C;
+}
+
+#login-form label {
+    display: block;
+    margin: 10px 0;
+    color: #000;
+}
+
+#login-form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    transition: border 0.3s, background-color 0.3s;
+}
+
+#login-form input:hover {
+    border: 1px solid #35465C;
+}
+
+#login-form button {
+    background-color: #35465C;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#login-form button:hover {
+    background-color: #293B4A;
+}
+
+#register-link {
+            font-size: 14px;
+            color: #ccc; /* Warna abu-abu */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        #register-link:hover {
+            color: #000; 
+                   }
+        
+footer {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    background: linear-gradient(to top, rgba(53, 70, 92, 0.8), rgba(53, 70, 92, 1));
+    color: #fff;
+    transition: background 0.5s;
+}
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Selamat Datang di Website Buku Novel & Komik</h1>
+    </header>
+
+    <div id="login-form">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="email">Email:</label>
+<input type="email" id="email" name="email" required>
+
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        
+        <p>Belum punya akun? <a id="register-link" href="register.html">Daftar sekarang</a></p>
+        
+        <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-analytics.js";
+  
+  import { getFirestore, collection, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signInWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBa_XuCld_iNtP2lH8vkn1hcRDr3bwBXRc",
+  authDomain: "webcomicnovel.firebaseapp.com",
+  databaseURL: "https://webcomicnovel-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "webcomicnovel",
+  storageBucket: "webcomicnovel.appspot.com",
+  messagingSenderId: "840417395448",
+  appId: "1:840417395448:web:830fb48f47a3bba684b10d",
+  measurementId: "G-0YS5XKQDSV"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const firestore = getFirestore(app);
+
+  document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Periksa apakah ini admin atau user
+    if (email === 'michaeldefenai@gmail.com' && password === 'admin123') {
+        // Jika admin, gunakan metode otentikasi admin
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                if (user) {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    console.error('Admin not found!');
+                }
+            })
+            .catch((error) => {
+                console.error('Admin login error:', error.message);
+                alert('Admin login gagal. Periksa kembali email dan password.');
+            });
+    } else {
+        // Jika bukan admin, gunakan metode otentikasi user
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                if (user) {
+                    window.location.href = 'index.html';
+                } else {
+                    console.error('User not found!');
+                }
+            })
+            .catch((error) => {
+                console.error('User login error:', error.message);
+                alert('User login gagal. Periksa kembali email dan password.');
+            });
+    }
+});
+</script>
+
+    </div>
+
+    <footer>
+        <p>© 2023 Website Buku Novel & Komik by Parid Hadiansyah</p>
+    </footer>
+</body>
+
+</html>

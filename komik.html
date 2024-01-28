@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Komik</title>
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css" id="dcoder_stylesheet">
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+      
+
+        header {
+    background : linear-gradient(rgba(53, 70, 92, 0.8), rgba(53, 70, 92, 0.5)), url('header_background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; 
+            padding: 0; 
+            background-color: #f5f5f5;
+            box-sizing: border-box; 
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        #daftarKomik,
+        #formKomik {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            cursor: pointer;
+            background-color: #35465C;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #293B4A;
+        }
+
+        .komik {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        header {
+            background-color: #35465C;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #35465C;
+            color: white;
+        }
+
+        footer {
+            background-color: #35465C;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%; 
+        }
+    </style>
+</head>
+
+
+    <header>
+        <h1>Website Komik</h1>
+        <nav>
+            <ul>
+                <li><a href="novel.html">Novel</a></li>
+                <li><a href="index.html">Menu Utama</a></li>
+                <li><a href="login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<body>
+        <div id="daftarKomik"></div>
+
+
+    <script type="module">
+        
+
+        
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBa_XuCld_iNtP2lH8vkn1hcRDr3bwBXRc",
+  authDomain: "webcomicnovel.firebaseapp.com",
+  databaseURL: "https://webcomicnovel-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "webcomicnovel",
+  storageBucket: "webcomicnovel.appspot.com",
+  messagingSenderId: "840417395448",
+  appId: "1:840417395448:web:830fb48f47a3bba684b10d",
+  measurementId: "G-0YS5XKQDSV"
+};
+        firebase.initializeApp(firebaseConfig);
+        const firestore = firebase.firestore();
+
+    const daftarKomik = document.getElementById('daftarKomik');
+
+    function renderKomik(komik) {
+        const komikContainer = document.createElement('div');
+        komikContainer.classList.add('komik-item');
+
+        const coverImage = document.createElement('img');
+        coverImage.src = komik.coverURL;
+        coverImage.alt = komik.judul;
+
+        const komikInfo = document.createElement('div');
+        komikInfo.classList.add('komik-info');
+
+        const judulElement = document.createElement('h3');
+        judulElement.textContent = komik.judul;
+
+        const pengarangElement = document.createElement('p');
+        pengarangElement.textContent = `Pengarang: ${komik.pengarang}`;
+
+        const sinopsisElement = document.createElement('p');
+        sinopsisElement.textContent = komik.sinopsis;
+
+        komikInfo.appendChild(judulElement);
+        komikInfo.appendChild(pengarangElement);
+        komikInfo.appendChild(sinopsisElement);
+
+        komikContainer.appendChild(coverImage);
+        komikContainer.appendChild(komikInfo);
+
+        daftarKomik.appendChild(komikContainer);
+    }
+
+    firestore.collection('komik').onSnapshot((snapshot) => {
+        daftarKomik.innerHTML = ''; // Clear previous data
+        snapshot.forEach((doc) => {
+            const komikData = doc.data();
+            renderKomik(komikData);
+        });
+    });
+</script>
+
+
+    <footer>
+        <p>© 2023 Website Buku Novel &amp; Komik by Parid Hadiansyah</p>
+    </footer>
+</body>
+
+</html>

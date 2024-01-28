@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Novel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        .novel-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .novel-list {
+            margin-top: 20px;
+        }
+
+        .novel-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .delete-btn {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+
+<header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="admin-dashboard.html">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="komik-admin.html">Komik Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="novel-form">
+                    <h2 class="mb-4">Tambah Novel Baru</h2>
+                    <form id="tambahNovelForm">
+    <div class="form-group">
+        <input type="text" class="form-control" id="judul" placeholder="Judul Novel" required>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="pengarang" placeholder="Pengarang Novel" required>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" id="sinopsis" placeholder="Sinopsis Novel" required></textarea>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="coverURL" placeholder="URL Cover Novel" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Tambah Novel</button>
+</form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row novel-list" id="daftarNovel"></div>
+    </div>
+
+    <!-- Link Bootstrap JS dan Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module">
+        
+
+        
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBa_XuCld_iNtP2lH8vkn1hcRDr3bwBXRc",
+  authDomain: "webcomicnovel.firebaseapp.com",
+  databaseURL: "https://webcomicnovel-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "webcomicnovel",
+  storageBucket: "webcomicnovel.appspot.com",
+  messagingSenderId: "840417395448",
+  appId: "1:840417395448:web:830fb48f47a3bba684b10d",
+  measurementId: "G-0YS5XKQDSV"
+};
+        firebase.initializeApp(firebaseConfig);
+        const firestore = firebase.firestore();
+
+        const tambahNovelForm = document.getElementById('tambahNovelForm');
+        const daftarNovel = document.getElementById('daftarNovel');
+
+        // Function to render novel data
+        function renderNovel(novel) {
+            const novelContainer = document.createElement('div');
+            novelContainer.classList.add('novel');
+
+            const coverImage = document.createElement('img');
+            coverImage.src = novel.coverURL;
+            coverImage.alt = novel.judul;
+
+            const novelInfo = document.createElement('div');
+            novelInfo.classList.add('novel-info');
+
+            const judulElement = document.createElement('h3');
+            judulElement.textContent = novel.judul;
+
+            const pengarangElement = document.createElement('p');
+            pengarangElement.textContent = `Pengarang: ${novel.pengarang}`;
+
+            const sinopsisElement = document.createElement('p');
+            sinopsisElement.textContent = novel.sinopsis;
+
+            // Append elements to the container
+            novelInfo.appendChild(judulElement);
+            novelInfo.appendChild(pengarangElement);
+            novelInfo.appendChild(sinopsisElement);
+
+            novelContainer.appendChild(coverImage);
+            novelContainer.appendChild(novelInfo);
+
+            // Append the container to the daftarNovel
+            daftarNovel.appendChild(novelContainer);
+        }
+
+        // Event listener for tambahNovelForm submission
+        tambahNovelForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const judul = document.getElementById('judul').value;
+    const pengarang = document.getElementById('pengarang').value;
+    const sinopsis = document.getElementById('sinopsis').value;
+    const coverURL = document.getElementById('coverURL').value;
+
+    // Add new novel to Firestore
+    firestore.collection('novel').add({
+        judul: judul,
+        pengarang: pengarang,
+        sinopsis: sinopsis,
+        coverURL: coverURL
+    });
+
+    // Clear form fields
+    tambahNovelForm.reset();
+});
+
+
+        // Fetch novel data and render on page load
+        firestore.collection('novel').onSnapshot((snapshot) => {
+            daftarNovel.innerHTML = ''; // Clear previous data
+            snapshot.forEach((doc) => {
+                const novelData = doc.data();
+                renderNovel(novelData);
+            });
+        });
+    </script>
+</body>
+
+</html>
